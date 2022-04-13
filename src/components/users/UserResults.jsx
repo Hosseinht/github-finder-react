@@ -6,10 +6,6 @@ import UserItem from "./UserItem";
 const UserResults = () => {
     const {users, loading, } = useContext(GithubContext)
 
-    // useEffect(() => {
-    //     fetchUser()
-    // }, [])
-
 
     if (!loading) {
         return (
