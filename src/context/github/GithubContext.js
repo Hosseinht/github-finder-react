@@ -38,6 +38,15 @@ export const GithubProvider = ({children}) => {
             payload: items,
         })
     }
+    
+    const clearUsers = () => {
+      dispatch({
+          type: "CLEAR_USERS",
+      })
+    }
+
+    // We have these functions that dispatch an action to our reducer, our reducer looks at that action,
+    // updates the state and then any component that use any part of that state are gonna react to it
 
     const setLoading = () => dispatch({type: "SET_LOADING"})
 
@@ -46,7 +55,8 @@ export const GithubProvider = ({children}) => {
         // loading,
         users: state.users,
         loading: state.loading,
-        searchUsers
+        searchUsers,
+        clearUsers
     }}>
         {children}
     </GithubContext.Provider>

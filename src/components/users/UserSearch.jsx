@@ -6,7 +6,7 @@ const UserSearch = () => {
     const [text, setText] = useState('')
     // When we have a form usually a form input has its own state. component level state
 
-    const {users, searchUsers} = useContext(GithubContext)
+    const {users, searchUsers, clearUsers} = useContext(GithubContext)
 
     const handleChange = (e) => {
         setText(e.target.value)
@@ -42,9 +42,9 @@ const UserSearch = () => {
             </div>
             {users.length > 0 &&
                 <div>
-                    <div className="btn btn-ghost btn-lg">
+                    <button onClick={clearUsers} className="btn btn-ghost btn-lg">
                         clear
-                    </div>
+                    </button>
                 </div>
             }
 
