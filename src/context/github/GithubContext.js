@@ -17,19 +17,25 @@ export const GithubProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(githubReducer, initialState)
 
-    const fetchUser = async () => {
+    const searchUsers = async (text) => {
         setLoading()
-        const response = await fetch(`${GITHUB_URL}/users`, {
+
+        const params = new URLSearchParams({
+            q: text
+        })
+
+        const response = await fetch(`${GITHUB_URL}/search/users?${params}`, {
             headers: {
                 Authorization: `token ${GITHUB_TOKEN}`
             }
         })
-        const data = await response.json()
-        // setUsers(data)
-        // setLoading(false)
+        const {items} = await response.json()
+
+        // we don't need everything it returns we just need items array so we destructure from the object that return
+        // and get items
         dispatch({
             type: 'GET_USERS',
-            payload: data,
+            payload: items,
         })
     }
 
@@ -40,8 +46,7 @@ export const GithubProvider = ({children}) => {
         // loading,
         users: state.users,
         loading: state.loading,
-
-        fetchUser
+        searchUsers
     }}>
         {children}
     </GithubContext.Provider>

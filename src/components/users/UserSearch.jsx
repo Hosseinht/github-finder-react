@@ -6,7 +6,7 @@ const UserSearch = () => {
     const [text, setText] = useState('')
     // When we have a form usually a form input has its own state. component level state
 
-    const {users} = useContext(GithubContext)
+    const {users, searchUsers} = useContext(GithubContext)
 
     const handleChange = (e) => {
         setText(e.target.value)
@@ -17,6 +17,7 @@ const UserSearch = () => {
         if (text === '') {
             window.alert("Please enter something")
         } else {
+            searchUsers(text)
             setText('')
         }
     }
