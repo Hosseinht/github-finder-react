@@ -6,6 +6,13 @@ const githubReducer = (state, action) => {
                 users: action.payload,
                 loading: false
             }
+        case 'GET_USER':
+            return {
+                ...state,
+                user: action.payload,
+                loading: false
+            }
+
         case 'SET_LOADING':
             // whenever we need to set anything in our state we use a reducer
             // so, we're going to have this SET_LOADING that we can then dispatch

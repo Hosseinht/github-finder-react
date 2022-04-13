@@ -12,6 +12,7 @@ export const GithubProvider = ({children}) => {
 
     const initialState = {
         users: [],
+        user: {},
         loading: false
     }
 
@@ -38,11 +39,30 @@ export const GithubProvider = ({children}) => {
             payload: items,
         })
     }
-    
+
+    // Get single user
+    const getUser = async (login) => {
+        setLoading()
+
+        const response = await fetch(`${GITHUB_URL}/users/${login}`, {
+            headers: {
+                Authorization: `token ${GITHUB_TOKEN}`
+            }
+        })
+        if (response.status === 404) {
+            window.location = '/notfound'
+        } else {
+            const data = await response.json()
+            dispatch({
+                type: 'GET_USER',
+                payload: data,
+            })
+        }
+    }
     const clearUsers = () => {
-      dispatch({
-          type: "CLEAR_USERS",
-      })
+        dispatch({
+            type: "CLEAR_USERS",
+        })
     }
 
     // We have these functions that dispatch an action to our reducer, our reducer looks at that action,
@@ -54,9 +74,11 @@ export const GithubProvider = ({children}) => {
         // users,
         // loading,
         users: state.users,
+        user: state.user,
         loading: state.loading,
         searchUsers,
-        clearUsers
+        clearUsers,
+        getUser
     }}>
         {children}
     </GithubContext.Provider>
