@@ -1,20 +1,30 @@
 import {useContext, useEffect} from 'react';
 import {useParams, Link} from "react-router-dom";
-import {FaCodepen, FaStore, FaUserFriends, FaUser, FaUsers} from "react-icons/fa";
+import {FaCodepen, FaStore, FaUserFriends, FaUsers} from "react-icons/fa";
+import {getUser, getUserRepos} from "../context/github/GithubActions";
 import GithubContext from "../context/github/GithubContext";
 import Spinner from "../components/layout/Spinner";
 import RepoList from "../components/repos/RepoList";
 
 const User = () => {
-    const {user, loading, getUser, repos, getUserRepos} = useContext(GithubContext)
+    const {user, loading, repos, dispatch} = useContext(GithubContext)
+    // const {user, loading, getUser, repos, getUserRepos} = useContext(GithubContext)
     const params = useParams()
 
-    console.log(repos)
 
     useEffect(() => {
-        getUser(params.login)
-        getUserRepos(params.login)
-    }, [])
+        // getUser(params.login)
+        // getUserRepos(params.login)
+        dispatch({type: "SET_LOADING"})
+        const getUserData = async () => {
+            const userData = await getUser(params.login)
+            dispatch({type: 'GET_USER', payload: userData})
+
+            const userRepoData = await getUserRepos(params.login)
+            dispatch({type: 'GET_REPOS', payload: userRepoData})
+        }
+        getUserData()
+    }, [dispatch, params.login])
     // login is from  <Route path='/user/:login' element={<User/>}/>
 
     const {

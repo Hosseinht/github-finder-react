@@ -8,7 +8,7 @@ const UserSearch = () => {
     const [text, setText] = useState('')
     // When we have a form usually a form input has its own state. component level state
 
-    const {users, dispatch, clearUsers} = useContext(GithubContext)
+    const {users, dispatch} = useContext(GithubContext)
     // before refactoring
     // const {users, searchUsers, clearUsers} = useContext(GithubContext)
     const {setAlert} = useContext(AlertContext)
@@ -52,7 +52,8 @@ const UserSearch = () => {
             </div>
             {users.length > 0 &&
                 <div>
-                    <button onClick={clearUsers} className="btn btn-ghost btn-lg">
+                    {/*<button onClick={clearUsers} className="btn btn-ghost btn-lg">*/}
+                    <button onClick={() => dispatch({type: 'CLEAR_USERS'})} className="btn btn-ghost btn-lg">
                         clear
                     </button>
                 </div>
