@@ -31,6 +31,9 @@ const UserSearch = () => {
             setText('')
         }
     }
+    // searchUser was in GithubContext before, and now it's come from GithubAction
+    // before when we just called searchUser in handleSubmit function, but now it
+    // returns data, so we need to use async await here and put it in a variable
 
     return (
         <div className='grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 mb-2 gap-8'>
