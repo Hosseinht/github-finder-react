@@ -3,13 +3,17 @@ import {useParams, Link} from "react-router-dom";
 import {FaCodepen, FaStore, FaUserFriends, FaUser, FaUsers} from "react-icons/fa";
 import GithubContext from "../context/github/GithubContext";
 import Spinner from "../components/layout/Spinner";
+import RepoList from "../components/repos/RepoList";
 
 const User = () => {
-    const {user, loading, getUser} = useContext(GithubContext)
+    const {user, loading, getUser, repos, getUserRepos} = useContext(GithubContext)
     const params = useParams()
+
+    console.log(repos)
 
     useEffect(() => {
         getUser(params.login)
+        getUserRepos(params.login)
     }, [])
     // login is from  <Route path='/user/:login' element={<User/>}/>
 
@@ -84,7 +88,7 @@ const User = () => {
                                 <div className="stat">
                                     <div className="stat-title text-md">Website</div>
                                     <div className="text-lg stat-value">
-                                        <a href={`https://${blog}`} target='_blank' rel='noreferrer' >
+                                        <a href={`https://${blog}`} target='_blank' rel='noreferrer'>
                                             {blog}
                                         </a>
                                     </div>
@@ -94,7 +98,8 @@ const User = () => {
                                 <div className="stat">
                                     <div className="stat-title text-md">Twitter</div>
                                     <div className="text-lg stat-value">
-                                        <a href={`https://twitter.com/${twitter_username}`} target='_blank' rel='noreferrer' >
+                                        <a href={`https://twitter.com/${twitter_username}`} target='_blank'
+                                           rel='noreferrer'>
                                             {twitter_username}
                                         </a>
                                     </div>
@@ -150,6 +155,7 @@ const User = () => {
                     </div>
 
                 </div>
+                <RepoList repos={repos}/>
             </div>
         </>
     );

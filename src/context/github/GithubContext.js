@@ -13,6 +13,7 @@ export const GithubProvider = ({children}) => {
     const initialState = {
         users: [],
         user: {},
+        repos: [],
         loading: false
     }
 
@@ -65,6 +66,29 @@ export const GithubProvider = ({children}) => {
         })
     }
 
+    const getUserRepos = async (login) => {
+        setLoading()
+
+        const params = new URLSearchParams({
+            sort: 'created',
+            per_page:10
+        })
+
+        const response = await fetch(`${GITHUB_URL}/users/${login}/repos?${params}`, {
+            headers: {
+                Authorization: `token ${GITHUB_TOKEN}`
+            }
+        })
+
+        const data = await response.json()
+        dispatch({
+            type: 'GET_REPOS',
+            payload: data,
+        })
+
+    }
+
+
     // We have these functions that dispatch an action to our reducer, our reducer looks at that action,
     // updates the state and then any component that use any part of that state are gonna react to it
 
@@ -76,9 +100,11 @@ export const GithubProvider = ({children}) => {
         users: state.users,
         user: state.user,
         loading: state.loading,
+        repos: state.repos,
         searchUsers,
         clearUsers,
-        getUser
+        getUser,
+        getUserRepos,
     }}>
         {children}
     </GithubContext.Provider>
