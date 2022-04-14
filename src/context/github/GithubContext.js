@@ -19,27 +19,27 @@ export const GithubProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(githubReducer, initialState)
 
-    const searchUsers = async (text) => {
-        setLoading()
-
-        const params = new URLSearchParams({
-            q: text
-        })
-
-        const response = await fetch(`${GITHUB_URL}/search/users?${params}`, {
-            headers: {
-                Authorization: `token ${GITHUB_TOKEN}`
-            }
-        })
-        const {items} = await response.json()
-
-        // we don't need everything it returns we just need items array so we destructure from the object that return
-        // and get items
-        dispatch({
-            type: 'GET_USERS',
-            payload: items,
-        })
-    }
+    // const searchUsers = async (text) => {
+    //     setLoading()
+    //
+    //     const params = new URLSearchParams({
+    //         q: text
+    //     })
+    //
+    //     const response = await fetch(`${GITHUB_URL}/search/users?${params}`, {
+    //         headers: {
+    //             Authorization: `token ${GITHUB_TOKEN}`
+    //         }
+    //     })
+    //     const {items} = await response.json()
+    //
+    //     // we don't need everything it returns we just need items array so we destructure from the object that return
+    //     // and get items
+    //     dispatch({
+    //         type: 'GET_USERS',
+    //         payload: items,
+    //     })
+    // }
 
     // Get single user
     const getUser = async (login) => {
@@ -71,7 +71,7 @@ export const GithubProvider = ({children}) => {
 
         const params = new URLSearchParams({
             sort: 'created',
-            per_page:10
+            per_page: 10
         })
 
         const response = await fetch(`${GITHUB_URL}/users/${login}/repos?${params}`, {
@@ -95,13 +95,14 @@ export const GithubProvider = ({children}) => {
     const setLoading = () => dispatch({type: "SET_LOADING"})
 
     return <GithubContext.Provider value={{
-        // users,
-        // loading,
-        users: state.users,
-        user: state.user,
-        loading: state.loading,
-        repos: state.repos,
-        searchUsers,
+        // Refactoring
+        // users: state.users,
+        // user: state.user,
+        // loading: state.loading,
+        // repos: state.repos,
+        // Instead of all above we can have
+        ...state,
+        dispatch,
         clearUsers,
         getUser,
         getUserRepos,

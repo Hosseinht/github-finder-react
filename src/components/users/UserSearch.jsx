@@ -1,4 +1,5 @@
 import {useState, useContext} from "react";
+import {searchUsers} from "../../context/github/GithubActions";
 import GithubContext from "../../context/github/GithubContext";
 import AlertContext from "../../context/alert/AlertContext";
 
@@ -7,19 +8,26 @@ const UserSearch = () => {
     const [text, setText] = useState('')
     // When we have a form usually a form input has its own state. component level state
 
-    const {users, searchUsers, clearUsers} = useContext(GithubContext)
-    const { setAlert} = useContext(AlertContext)
+    const {users, dispatch, clearUsers} = useContext(GithubContext)
+    // before refactoring
+    // const {users, searchUsers, clearUsers} = useContext(GithubContext)
+    const {setAlert} = useContext(AlertContext)
 
     const handleChange = (e) => {
         setText(e.target.value)
     }
 
-    const handleSubmit = (e) => {
+    // const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         if (text === '') {
             setAlert("Please enter something", "error")
         } else {
-            searchUsers(text)
+            // before refactoring
+            // searchUsers(text)
+            dispatch({type: 'SET_LOADING'})
+            const users = await searchUsers(text)
+            dispatch({type: 'GET_USERS', payload: users})
             setText('')
         }
     }
